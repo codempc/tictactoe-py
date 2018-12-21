@@ -5,6 +5,7 @@ from Color import Color
 
 class Board:
     turn = 0
+    symbol = "x"
     # This sets the WIDTH and HEIGHT of each grid location
     GRID_WIDTH = 80
     GRID_HEIGHT = 80
@@ -34,6 +35,43 @@ class Board:
                     ((self.GRID_MARGIN + self.GRID_HEIGHT) * row + self.GRID_MARGIN),
                 ]
 
+    # Check the win condition
+    def is_game_won(self, row, column):
+        # Checking column
+        for i in range(3):
+            if self.grid[row][i] != self.symbol:
+                break
+            if i == 2:
+                print(self.symbol + ' wins!')
+                return True
+
+        # Checking rows
+        for i in range(3):
+            if self.grid[i][column] != self.symbol:
+                break
+            if i == 2:
+                print(self.symbol + ' wins!')
+                return True
+
+        # Checking diagonal
+        if row == column:
+            for i in range(3):
+                if self.grid[i][i] != self.symbol:
+                    break
+                if i == 2:
+                    print(self.symbol + ' wins!')
+                    return True
+
+        # Checking anti-diagonal
+        if row + column == 2:
+            for i in range(3):
+                if self.grid[i][2 - i] != self.symbol:
+                    break
+                if i == 2:
+                    print(self.symbol + ' wins!')
+                    return True
+        return False
+
     def is_full(self):
         for i in range(self.board_multiplier):
             for j in range(self.board_multiplier):
@@ -51,13 +89,13 @@ class Board:
         if self.grid_is_empty(row, column):
             # Set with new grid change.
             if self.turn == 0:
-                symbol = "x"
+                self.symbol = "x"
                 self.turn = 1
             else:
-                symbol = "o"
+                self.symbol = "o"
                 self.turn = 0
             # Get symbols
-            symbols = Symbol.load_symbol(symbol)
+            symbols = Symbol.load_symbol(self.symbol)
             self.grid[row][column] = symbols[0]
             screen.blit(
                 symbols[1],

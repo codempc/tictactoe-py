@@ -21,8 +21,9 @@ board = Board(screen)
 
 
 def display_message(title, message):
-    MessageBox = ctypes.windll.user32.MessageBoxW
-    MessageBox(None, message, title, 0)
+    # MessageBox = ctypes.windll.user32.MessageBoxW
+    # MessageBox(None, message, title, 0)
+    confirm('text', 'button', ['title'])
 
 
 # Loop until the user clicks the close button.
@@ -44,9 +45,12 @@ while not done:
 
             board.set_grid(row, column, screen)
 
+            game_is_won = board.is_game_won(row, column)
+            done = game_is_won
+
             if board.is_full():
-                display_message('Warning', 'Game Over')
                 done = True
+                print('Draw!')
 
     # Limit to 60 frames per second
     clock.tick(60)
