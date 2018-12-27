@@ -2,7 +2,7 @@ from Screen import Screen
 from Board import Board
 
 import pygame
-import ctypes
+# import ctypes
 
 # Define the screen specs
 WINDOW_SIZE = [255, 255]
@@ -20,14 +20,15 @@ clock = pygame.time.Clock()
 board = Board(screen)
 
 
-def display_message(title, message):
-    # MessageBox = ctypes.windll.user32.MessageBoxW
-    # MessageBox(None, message, title, 0)
-    confirm('text', 'button', ['title'])
+# def display_message(title, message):
+#     # MessageBox = ctypes.windll.user32.MessageBoxW
+#     # MessageBox(None, message, title, 0)
+#     # confirm('text', 'button', ['title'])
 
 
 # Loop until the user clicks the close button.
 done = False
+
 # -------- Main Program Loop -----------
 while not done:
     keys = pygame.key.get_pressed()
@@ -48,7 +49,7 @@ while not done:
             game_is_won = board.is_game_won(row, column)
             done = game_is_won
 
-            if board.is_full():
+            if board.is_full() and not game_is_won:
                 done = True
                 print('Draw!')
 
