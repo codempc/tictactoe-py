@@ -10,21 +10,18 @@ title = "Tic Tac Toe"
 screen = Screen(WINDOW_SIZE, title)
 screen = screen.setup_screen()
 
-# Set turn
-turn = 0
-
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
+symbol = "x"
+
 # Setup Board
 board = Board(screen)
-
 
 # def display_message(title, message):
 #     # MessageBox = ctypes.windll.user32.MessageBoxW
 #     # MessageBox(None, message, title, 0)
 #     # confirm('text', 'button', ['title'])
-
 
 # Loop until the user clicks the close button.
 done = False
@@ -36,7 +33,9 @@ while not done:
     for event in pygame.event.get():  # User did something
         if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:  # If user clicked close
             done = True  # Flag that we are done so we exit this loop
-
+        elif symbol == "o":
+            [row, column] = board.do_minimax(0)
+            symbol = board.set_grid(row, column, screen)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # User clicks the mouse. Get the position
             pos = pygame.mouse.get_pos()
@@ -44,12 +43,12 @@ while not done:
             column = pos[0] // (Board.GRID_WIDTH + Board.GRID_MARGIN)
             row = pos[1] // (Board.GRID_HEIGHT + Board.GRID_MARGIN)
 
-            board.set_grid(row, column, screen)
+            symbol = board.set_grid(row, column, screen)
 
-            game_is_won = board.is_game_won(row, column)
-            done = game_is_won
+            is_game_won = board.is_game_won(row, column, symbol)
+            done = bool(is_game_won)
 
-            if board.is_full() and not game_is_won:
+            if board.is_full() and is_game_won is None:
                 done = True
                 print('Draw!')
 
