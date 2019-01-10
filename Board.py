@@ -88,6 +88,16 @@ class Board:
     def get_grid(self):
         return self.grid
 
+    def get_empty_grid_cell(self):
+        cells = []
+
+        for x in range(self.board_multiplier):
+            for y in range(self.board_multiplier):
+                if self.grid[x][y] == '':
+                    cells.append([x, y])
+
+        return cells
+
     def set_grid(self, row, column, screen):
         if self.grid_is_empty(row, column):
             # save symbol that is used to be paint.
@@ -124,16 +134,56 @@ class Board:
         else:
             self.current_player = "computer"
 
-    def do_minimax(self, depth):
-        best_move = None
-
-        if self.symbol == 'o':
+    def do_minimax(self, game_board, depth, player):
+        if player == 'o':
             best_move = [-1, -1, -1000]
         else:
             best_move = [-1, -1, +1000]
 
-        # if depth == 0 or self.is_full():
-        
+        for val in self.get_empty_grid_cell():
+            x = val[0]
+            y = val[1]
+            game_board[x][y] = player
+            if player == 'o':
+                next_player = 'x'
+            else:
+                next_player = 'o'
+            score = self.do_minimax(game_board, depth - 1, next_player)
+            game_board[x][y] = ''
+            score[0] = x
+            score[1] = y
 
-        print('minimax try')
-        return [1, 1]
+            if player == 'o':
+                if score[2] > best_move[2]:
+                    best_move = score
+
+            else:
+                if score[2] < best_move[2]:
+                    best_move = score
+
+        return [best_move[0], best_move[1]]
+
+        # this.getEmptyCells(gameBoard).forEach((cell) = > {
+        #     const
+        # x = cell[0];
+        # const
+        # y = cell[1];
+        # gameBoard[x][y] = player;
+        # const
+        # nextPlayer = player == = 'x' ? 'o': 'x'
+        # const
+        # score = this.minimax(gameBoard, depth - 1, nextPlayer);
+        # gameBoard[x][y] = null;
+        # score[0] = x;
+        # score[1] = y;
+        #
+        # if (player === 'o') {
+        # if (score[2] > bestMove[2])
+        # bestMove = score;
+        # }
+        # else {
+        # if (score[2] < bestMove[2])
+        # bestMove = score;
+        # }
+        # });
+        # if depth == 0 or self.is_full():
