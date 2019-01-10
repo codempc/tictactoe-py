@@ -37,6 +37,54 @@ class Board:
                     ((self.GRID_MARGIN + self.GRID_HEIGHT) * row + self.GRID_MARGIN),
                 ]
 
+    def evaluate(self, state):
+        """
+        Function to heuristic evaluation of state.
+        :param state: the state of the current board
+        :return: +1 if the computer wins; -1 if the human wins; 0 draw
+        """
+        if self.wins(state, 'x'):
+            score = +1
+        elif self.wins(state, 'o'):
+            score = -1
+        else:
+            score = 0
+
+        return score
+
+    def wins(self, state, player):
+        """
+        This function tests if a specific player wins. Possibilities:
+        * Three rows    [X X X] or [O O O]
+        * Three cols    [X X X] or [O O O]
+        * Two diagonals [X X X] or [O O O]
+        :param state: the state of the current board
+        :param player: a human or a computer
+        :return: True if the player wins
+        """
+        win_state = [
+            [state[0][0], state[0][1], state[0][2]],
+            [state[1][0], state[1][1], state[1][2]],
+            [state[2][0], state[2][1], state[2][2]],
+            [state[0][0], state[1][0], state[2][0]],
+            [state[0][1], state[1][1], state[2][1]],
+            [state[0][2], state[1][2], state[2][2]],
+            [state[0][0], state[1][1], state[2][2]],
+            [state[2][0], state[1][1], state[0][2]],
+        ]
+        if [player, player, player] in win_state:
+            return True
+        else:
+            return False
+
+    def game_over(self, state):
+        """
+        This function test if the human or computer wins
+        :param state: the state of the current board
+        :return: True if the human or computer wins
+        """
+        return self.wins(state, 'o') or self.wins(state, 'x')
+
     # Check the win condition
     def is_game_won(self, row, column, symbol):
         # Checking column
@@ -140,6 +188,10 @@ class Board:
         else:
             best_move = [-1, -1, +1000]
 
+        if depth == 0 or self.game_over(game_board):
+            score = self.evaluate(game_board)
+            return [-1, -1, score]
+
         for val in self.get_empty_grid_cell():
             x = val[0]
             y = val[1]
@@ -161,7 +213,7 @@ class Board:
                 if score[2] < best_move[2]:
                     best_move = score
 
-        return [best_move[0], best_move[1]]
+        return best_move
 
         # this.getEmptyCells(gameBoard).forEach((cell) = > {
         #     const

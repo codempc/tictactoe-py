@@ -38,8 +38,8 @@ while not done:
         if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:  # If user clicked close
             done = True  # Flag that we are done so we exit this loop
         elif board.get_current_player() == 'computer':
-            [row, column] = board.do_minimax(board.get_grid(), len(board.get_empty_grid_cell()), 'o')
-            symbol = board.set_grid(row, column, screen)
+            best_move = board.do_minimax(board.get_grid(), len(board.get_empty_grid_cell()), 'o')
+            symbol = board.set_grid(best_move[0], best_move[1], screen)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # User clicks the mouse. Get the position
             pos = pygame.mouse.get_pos()
