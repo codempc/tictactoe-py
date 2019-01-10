@@ -13,10 +13,14 @@ screen = screen.setup_screen()
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-symbol = "x"
-
 # Setup Board
 board = Board(screen)
+player = input('Do you want to go first or second? (1st/2nd)')
+if player == "1st":
+    board.set_current_player("player")
+else:
+    board.set_current_player("computer")
+
 
 # def display_message(title, message):
 #     # MessageBox = ctypes.windll.user32.MessageBoxW
@@ -33,7 +37,7 @@ while not done:
     for event in pygame.event.get():  # User did something
         if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:  # If user clicked close
             done = True  # Flag that we are done so we exit this loop
-        elif symbol == "o":
+        elif board.get_current_player() == 'computer':
             [row, column] = board.do_minimax(0)
             symbol = board.set_grid(row, column, screen)
         elif event.type == pygame.MOUSEBUTTONDOWN:

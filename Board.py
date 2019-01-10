@@ -12,6 +12,8 @@ class Board:
     # This sets the margin between each cell
     GRID_MARGIN = 5
     board_multiplier = 3
+    streak_win_condition = 3
+    current_player = 'player'
 
     def __init__(self, screen):
         self.grid = [[""] * self.board_multiplier for n in range(self.board_multiplier)]
@@ -38,7 +40,7 @@ class Board:
     # Check the win condition
     def is_game_won(self, row, column, symbol):
         # Checking column
-        for i in range(3):
+        for i in range(self.streak_win_condition):
             if self.grid[row][i] != symbol:
                 break
             if i == 2:
@@ -46,7 +48,7 @@ class Board:
                 return symbol
 
         # Checking rows
-        for i in range(3):
+        for i in range(self.streak_win_condition):
             if self.grid[i][column] != symbol:
                 break
             if i == 2:
@@ -55,7 +57,7 @@ class Board:
 
         # Checking diagonal
         if row == column:
-            for i in range(3):
+            for i in range(self.streak_win_condition):
                 if self.grid[i][i] != symbol:
                     break
                 if i == 2:
@@ -64,7 +66,7 @@ class Board:
 
         # Checking anti-diagonal
         if row + column == 2:
-            for i in range(3):
+            for i in range(self.streak_win_condition):
                 if self.grid[i][2 - i] != symbol:
                     break
                 if i == 2:
@@ -100,6 +102,7 @@ class Board:
                 symbols[1],
                 (self.grid_position[row][column][0], self.grid_position[row][column][1]),
             )
+            self.change_player()
             if self.symbol == "x":
                 self.symbol = "o"
             else:
@@ -109,6 +112,18 @@ class Board:
         else:
             print('Cannot put grid here.')
 
+    def set_current_player(self, player):
+        self.current_player = player
+
+    def get_current_player(self):
+        return self.current_player
+
+    def change_player(self):
+        if self.current_player == "computer":
+            self.current_player = "player"
+        else:
+            self.current_player = "computer"
+
     def do_minimax(self, depth):
         best_move = None
 
@@ -117,9 +132,8 @@ class Board:
         else:
             best_move = [-1, -1, +1000]
 
-        # if depth == 0 or self.is_full() or self.is_game_won()
+        # if depth == 0 or self.is_full():
+        
 
         print('minimax try')
         return [1, 1]
-
-
