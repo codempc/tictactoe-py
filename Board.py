@@ -4,8 +4,6 @@ from Color import Color
 
 
 class Board:
-    # set initial symbol
-    symbol = "x"
     # This sets the WIDTH and HEIGHT of each grid location
     GRID_WIDTH = 80
     GRID_HEIGHT = 80
@@ -13,11 +11,13 @@ class Board:
     GRID_MARGIN = 5
     board_multiplier = 3
     streak_win_condition = 3
-    current_player = 'player'
+    current_player = None
 
-    def __init__(self, screen):
+    def __init__(self, screen, player, computer):
         self.grid = [[""] * self.board_multiplier for n in range(self.board_multiplier)]
         self.grid_position = [[""] * self.board_multiplier for m in range(self.board_multiplier)]
+        self.player = player
+        self.computer = computer
         # Draw the grid
         for row in range(self.board_multiplier):
             for column in range(self.board_multiplier):
@@ -146,29 +146,21 @@ class Board:
 
         return cells
 
-    def set_grid(self, row, column, screen):
+    def set_grid(self, row, column, screen, current_player):
         if self.grid_is_empty(row, column):
-            # save symbol that is used to be paint.
-            symbol = self.symbol
-
             # Set with new grid change.
             # Get symbols
-            symbols = Symbol.load_symbol(self.symbol)
+            symbols = Symbol.load_symbol(current_player.get_symbol())
             self.grid[row][column] = symbols[0]
             # Draw grid.
             screen.blit(
                 symbols[1],
                 (self.grid_position[row][column][0], self.grid_position[row][column][1]),
             )
+
             self.change_player()
-            if self.symbol == "x":
-                self.symbol = "o"
-            else:
-                self.symbol = "x"
 
-            self.check_game_won(row, column, symbol)
-
-            return symbol
+            # return symbol
         else:
             print('Cannot put grid here.')
 
@@ -179,10 +171,10 @@ class Board:
         return self.current_player
 
     def change_player(self):
-        if self.current_player == "computer":
-            self.current_player = "player"
+        if self.current_player.get_id() == self.player.get_id():
+            self.current_player = self.computer
         else:
-            self.current_player = "computer"
+            self.current_player = self.player
 
     def do_minimax(self, game_board, depth, player):
         if player == 'o':
