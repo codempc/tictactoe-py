@@ -43,9 +43,9 @@ class Board:
         :param state: the state of the current board
         :return: +1 if the computer wins; -1 if the human wins; 0 draw
         """
-        if self.wins(state, 'x'):
+        if self.wins(state, 'o'):
             score = +1
-        elif self.wins(state, 'o'):
+        elif self.wins(state, 'x'):
             score = -1
         else:
             score = 0
@@ -86,7 +86,7 @@ class Board:
         return self.wins(state, 'o') or self.wins(state, 'x')
 
     # Check the win condition
-    def is_game_won(self, row, column, symbol):
+    def check_game_won(self, row, column, symbol):
         # Checking column
         for i in range(self.streak_win_condition):
             if self.grid[row][i] != symbol:
@@ -166,6 +166,8 @@ class Board:
             else:
                 self.symbol = "x"
 
+            self.check_game_won(row, column, symbol)
+
             return symbol
         else:
             print('Cannot put grid here.')
@@ -214,28 +216,3 @@ class Board:
                     best_move = score
 
         return best_move
-
-        # this.getEmptyCells(gameBoard).forEach((cell) = > {
-        #     const
-        # x = cell[0];
-        # const
-        # y = cell[1];
-        # gameBoard[x][y] = player;
-        # const
-        # nextPlayer = player == = 'x' ? 'o': 'x'
-        # const
-        # score = this.minimax(gameBoard, depth - 1, nextPlayer);
-        # gameBoard[x][y] = null;
-        # score[0] = x;
-        # score[1] = y;
-        #
-        # if (player === 'o') {
-        # if (score[2] > bestMove[2])
-        # bestMove = score;
-        # }
-        # else {
-        # if (score[2] < bestMove[2])
-        # bestMove = score;
-        # }
-        # });
-        # if depth == 0 or self.is_full():

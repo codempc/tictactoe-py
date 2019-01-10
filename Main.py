@@ -39,7 +39,13 @@ while not done:
             done = True  # Flag that we are done so we exit this loop
         elif board.get_current_player() == 'computer':
             best_move = board.do_minimax(board.get_grid(), len(board.get_empty_grid_cell()), 'o')
-            symbol = board.set_grid(best_move[0], best_move[1], screen)
+            column = best_move[0]
+            row = best_move[1]
+            symbol = board.set_grid(column, row, screen)
+            is_game_won = board.check_game_won(column, row, symbol)
+            # Need to say someone won the game here. instead of directly quitting the game.
+            done = bool(is_game_won)
+
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # User clicks the mouse. Get the position
             pos = pygame.mouse.get_pos()
@@ -49,9 +55,10 @@ while not done:
 
             symbol = board.set_grid(row, column, screen)
 
-            is_game_won = board.is_game_won(row, column, symbol)
+            is_game_won = board.check_game_won(row, column, symbol)
             done = bool(is_game_won)
 
+            # Need to say someone won the game here. instead of directly quitting the game.
             if board.is_full() and is_game_won is None:
                 done = True
                 print('Draw!')
