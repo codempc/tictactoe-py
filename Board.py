@@ -86,12 +86,20 @@ class Board:
         return self.wins(state, 'o') or self.wins(state, 'x')
 
     # Check the win condition
-    def check_game_won(self, row, column, symbol):
+    def check_game_won(self, screen, row, column, symbol):
+        winning_color = Color.RED
+        grid_margin = 5
+        screen_weight_size = (self.GRID_WIDTH + grid_margin) * 3
+        screen_height_size = (self.GRID_HEIGHT + grid_margin) * 3
+
         # Checking column
         for i in range(self.streak_win_condition):
             if self.grid[row][i] != symbol:
                 break
             if i == 2:
+                line_y_position = (row * self.GRID_HEIGHT + (self.GRID_HEIGHT / 2)) + (2 * grid_margin)
+                pygame.draw.line(screen, winning_color, [grid_margin, line_y_position],
+                                 [screen_weight_size, line_y_position], 5)
                 print(symbol + ' wins!')
                 return symbol
 
@@ -100,6 +108,9 @@ class Board:
             if self.grid[i][column] != symbol:
                 break
             if i == 2:
+                line_x_position = (column * self.GRID_WIDTH + (self.GRID_WIDTH / 2)) + (2 * grid_margin)
+                pygame.draw.line(screen, winning_color, [line_x_position, grid_margin],
+                                 [line_x_position, screen_height_size], 5)
                 print(symbol + ' wins!')
                 return symbol
 
@@ -109,6 +120,8 @@ class Board:
                 if self.grid[i][i] != symbol:
                     break
                 if i == 2:
+                    pygame.draw.line(screen, winning_color, [grid_margin, grid_margin],
+                                     [screen_weight_size, screen_height_size], 5)
                     print(symbol + ' wins!')
                     return symbol
 
@@ -118,6 +131,9 @@ class Board:
                 if self.grid[i][2 - i] != symbol:
                     break
                 if i == 2:
+                    pygame.draw.line(screen, winning_color,
+                                     [screen_weight_size, grid_margin],
+                                     [grid_margin, screen_height_size], 5)
                     print(symbol + ' wins!')
                     return symbol
 
@@ -158,9 +174,9 @@ class Board:
                 (self.grid_position[row][column][0], self.grid_position[row][column][1]),
             )
 
+            done = self.check_game_won(screen, row, column, current_player.get_symbol())
             self.change_player()
-
-            # return symbol
+            return done
         else:
             print('Cannot put grid here.')
 
