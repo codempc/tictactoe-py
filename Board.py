@@ -224,3 +224,9 @@ class Board:
                     best_move = score
 
         return best_move
+    #
+    # def setup(self):
+    #     board = Board()
+    #     board.set_current_player('computer')
+    #     board.set_grid()
+    #     return board
