@@ -7,6 +7,7 @@ import pygame
 
 pygame.init()
 
+
 def set_screen():
     WINDOW_SIZE = [255, 255]
     title = "Tic Tac Toe"
@@ -14,6 +15,7 @@ def set_screen():
     screen = screen.setup_screen(Color.BLACK)
     clock = pygame.time.Clock()
     return screen, clock
+
 
 def set_player(choice, screen):
     player = Player('player', choice)
@@ -70,6 +72,7 @@ def make_button(screen, message, x, y, width, height, passive, active, status, c
     screen.blit(textSurf, textRect)
     return True
 
+
 def game_intro():
     [screen, clock] = set_screen()
     button_X = True
@@ -91,6 +94,7 @@ def game_intro():
 
         pygame.display.update()
         clock.tick(15)
+
 
 def game_outro():
     [screen, clock] = set_screen()

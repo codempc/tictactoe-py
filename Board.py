@@ -1,6 +1,7 @@
 import pygame
 from Symbol import Symbol
 from Color import Color
+import math
 
 
 class Board:
@@ -194,9 +195,9 @@ class Board:
 
     def do_minimax(self, game_board, depth, player):
         if player == 'o':
-            best_move = [-1, -1, -1000]
+            best_move = [-1, -1, -math.inf]
         else:
-            best_move = [-1, -1, +1000]
+            best_move = [-1, -1, math.inf]
 
         if depth == 0 or self.game_over(game_board):
             score = self.evaluate(game_board)
