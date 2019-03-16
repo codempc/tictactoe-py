@@ -195,13 +195,13 @@ class Board:
 
     def do_minimax(self, game_board, depth, player):
         if player == 'o':
-            best_move = [-1, -1, -math.inf]
+            best_move = [-1, -1, -math.inf, depth]
         else:
-            best_move = [-1, -1, math.inf]
+            best_move = [-1, -1, math.inf, depth]
 
         if depth == 0 or self.game_over(game_board):
             score = self.evaluate(game_board)
-            return [-1, -1, score]
+            return [-1, -1, score, depth]
 
         for val in self.get_empty_grid_cell():
             x = val[0]
@@ -213,16 +213,22 @@ class Board:
                 next_player = 'o'
             score = self.do_minimax(game_board, depth - 1, next_player)
             game_board[x][y] = ''
+            # score[0] and [1] represents where the best move is to be placed.
             score[0] = x
             score[1] = y
 
             if player == 'o':
-                if score[2] > best_move[2]:
-                    best_move = score
+                # score[2] represents the score point
+                if score[2] >= best_move[2]:
+                    # score[3] represents the depth.
+                    if score[2] > best_move[2] or best_move[3] < score[3]:
+                        best_move = score
 
             else:
-                if score[2] < best_move[2]:
-                    best_move = score
+                if score[2] <= best_move[2]:
+                    if score[2] < best_move[2] or best_move[3] < score[3]:
+                        best_move = score
+
         return best_move
     #
     # def setup(self):
