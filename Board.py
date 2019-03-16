@@ -223,7 +223,6 @@ class Board:
             else:
                 if score[2] < best_move[2]:
                     best_move = score
-
         return best_move
     #
     # def setup(self):
