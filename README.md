@@ -4,8 +4,15 @@ Requires a python version 3.6.
 
 To get started, first do:
 
+```bash
 pip install -r requirements.txt
+```
+
 
 and then just run:
-python3 main.py or 
+```bash
+python3 main.py
+or
 python main.py (if python is already by default using python3)
+```
+
