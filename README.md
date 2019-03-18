@@ -1,4 +1,4 @@
-Tic Tac Toe Single Player Game Against AI with (thought to be) perfect minimax implemented. 
+Tic Tac Toe Single Player Game Against AI with (thought to be) perfect minimax implemented. Try playing against the AI and if you can win against them, please do tell and email at lvicotrico98@gmail.com for our feedback.
 
 Requires a python version 3.6.
 
